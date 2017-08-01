@@ -23,23 +23,15 @@ OFF="\[\033[m\]"
 # export PS1="[\t] [\u@\h:\w] [\s] \\$ "
 export PS1="[\t] [${RED}\u${OFF}@${GREEN}\h${OFF}:${BLUE}\w${OFF}] [\s] \n\\$ "
 
-# 清屏
-bind -m vi-insert '\C-l':clear-screen
-# 切换到vi命令模式
-set -o vi
-#bind -m vi-insert '\C-j':vi-movement-mode
-bind -m vi-insert '\C-j':vi-movement-mode
-
 # 打开终端的文字颜色
 export CLICOLOR="true"
 
-# 命令别名
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias l='ls -al'
-alias k='exit'
-alias pc="proxychains4"
+if [ -n "$DISPLAY" ]; then
+    export TERM=xterm-256color
+fi
+
+# export JAVA_HOME JDK/JRE
+export JAVA_HOME="/usr/java/latest"
 
 # 每次登录进入到tmux
 tmux_init() {
@@ -56,12 +48,12 @@ tmux_init() {
 }
 
 # 判断是否已有开启的tmux会话，没有则开启
-if which tmux 2>&1 >/dev/null; then
+if which tmux 2>&1 >/dev/null && [ "$TERM" == "xterm-256color" ]; then
     test -z "$TMUX" && (tmux attach || tmux_init)
 fi
 
 # 键盘映射
-if [[ -r $HOME/.xmodmap && "$TERM" == "screen-256color" ]]; then
+if [[ -r $HOME/.xmodmap && "$TERM" == "xterm-256color" ]]; then
     /usr/bin/xmodmap -display :0 $HOME/.xmodmap
 fi
 
@@ -71,10 +63,23 @@ shopt -s histappend
 # 在显示命令提示符时，保存 history
 PROMPT_COMMAND='history -a'
 
-# export JAVA_HOME JDK/JRE
-export JAVA_HOME="/usr/java/latest"
-
 # Run shadowsocks proxy
 if [[ ! `netstat -ano | grep ":1080"` ]] ; then
     /usr/bin/sslocal -c /home/clancy/.shadowsocks.json &
 fi
+
+# 清屏
+bind -m vi-insert '\C-l':clear-screen
+# 切换到vi命令模式
+set -o vi
+#bind -m vi-insert '\C-j':vi-movement-mode
+bind -m vi-insert '\C-j':vi-movement-mode
+
+# 命令别名
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias l='ls -al'
+alias k='exit'
+alias pc="proxychains4"
+
