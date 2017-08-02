@@ -47,10 +47,10 @@ tmux_init() {
     tmux -2 attach-session -d
 }
 
-# 判断是否已有开启的tmux会话，没有则开启
-if which tmux 2>&1 >/dev/null && [ "$TERM" == "xterm-256color" ]; then
-    test -z "$TMUX" && (tmux attach || tmux_init)
-fi
+## 判断是否已有开启的tmux会话，没有则开启
+#if which tmux 2>&1 >/dev/null && [ "$TERM" == "xterm-256color" ]; then
+#    test -z "$TMUX" && (tmux attach || tmux_init)
+#fi
 
 # 键盘映射
 if [[ -r $HOME/.xmodmap && "$TERM" == "xterm-256color" ]]; then
