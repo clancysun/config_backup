@@ -70,9 +70,9 @@ fi
 
 # 清屏
 bind -m vi-insert '\C-l':clear-screen
+
 # 切换到vi命令模式
 set -o vi
-#bind -m vi-insert '\C-j':vi-movement-mode
 bind -m vi-insert '\C-j':vi-movement-mode
 
 # 命令别名
@@ -82,4 +82,4 @@ alias mv='mv -i'
 alias l='ls -al'
 alias k='exit'
 alias pc="proxychains4"
-
+alias ubuntu='ssh -p '22222' clancy@localhost'

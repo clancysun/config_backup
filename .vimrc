@@ -170,6 +170,9 @@ nnoremap <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
 " Press F7 The tabs will be converted to 4 spaces and file will be saved automatically.
 nnoremap <F7> :retab <CR> :w <CR>
 
+" 按F8运行Python$
+map <F8> :w<cr>:!python3 %<cr>
+
 
 " #############################################################################
 " #
