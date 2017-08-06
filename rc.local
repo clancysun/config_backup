@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Remap Caps Lock key for virtual console windows
+(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Control) | loadkeys -

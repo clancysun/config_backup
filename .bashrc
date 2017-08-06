@@ -33,6 +33,10 @@ fi
 # export JAVA_HOME JDK/JRE
 export JAVA_HOME="/usr/java/latest"
 
+## http(s) proxy
+#export http_proxy=http://127.0.0.1:8118
+#export https_proxy=http://127.0.0.1:8118
+
 # 每次登录进入到tmux
 tmux_init() {
     # 开启一个会话
@@ -53,9 +57,13 @@ tmux_init() {
 #fi
 
 # 键盘映射
+# Remap Caps Lock key for X windows
 if [[ -r $HOME/.xmodmap && "$TERM" == "xterm-256color" ]]; then
     /usr/bin/xmodmap -display :0 $HOME/.xmodmap
 fi
+
+# Remap Caps Lock key for virtual console windows
+#(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Control) | loadkeys -
 
 # 将命令追加到 history 中
 shopt -s histappend
@@ -65,7 +73,7 @@ PROMPT_COMMAND='history -a'
 
 # Run shadowsocks proxy
 if [[ ! `netstat -ano | grep ":1080"` ]] ; then
-    /usr/bin/sslocal -c /home/clancy/.shadowsocks.json &
+    /usr/bin/sslocal -c /home/clancy/.bwg.json &
 fi
 
 # 清屏
@@ -83,3 +91,4 @@ alias l='ls -al'
 alias k='exit'
 alias pc="proxychains4"
 alias ubuntu='ssh -p '22222' clancy@localhost'
+alias bwg='ssh -p 27626 clancy@138.128.209.152'

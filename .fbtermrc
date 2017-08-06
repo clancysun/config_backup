@@ -46,7 +46,7 @@ input-method=fcitx-fbterm
 # treat ambiguous width characters as wide
 #ambiguous-wide=yes
 
-export TERM=fbterm
+#export TERM=fbterm
 
 # restore white color
 echo -ne "\e]P7ffffff"
