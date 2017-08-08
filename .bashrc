@@ -37,6 +37,9 @@ export JAVA_HOME="/usr/java/latest"
 #export http_proxy=http://127.0.0.1:8118
 #export https_proxy=http://127.0.0.1:8118
 
+# GPG key
+export GPG_TTY=$(tty)
+
 # 每次登录进入到tmux
 tmux_init() {
     # 开启一个会话
