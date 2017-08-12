@@ -4,33 +4,43 @@
 " #
 " #############################################################################
 
-" Remap leader key
-"let mapleader = ","
-let mapleader = "\<Space>"
+"let mapleader = "\<Space>"
+let mapleader=","       " leader is comma
 
-" Map ; to : and save a million keystrokes 用于快速进入命令行
+" Map ; to : and save a million keystrokes
 nnoremap ; :
 
-" Press jj to exit from insert mode.
-inoremap jj <Esc>
-" Can be typed even faster than jj.
+" map escape to pressing jk at the same time (thanks touchbar)
 inoremap jk <Esc>
 inoremap kj <Esc>
-inoremap jw <Esc>
-inoremap wj <Esc>
+inoremap jj <Esc>
 " Press i to enter insert mode, and ii to exit.
 imap ii <Esc>
 " Two semicolons are easy to type.
-imap ;; <Esc>
-nmap ;; <Esc>
 vmap ;; <Esc>
-  
+inoremap ;; <Esc>
+
+" edit vimrc/bashrc and load vimrc bindings
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>eb :vsp ~/.bashrc<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+" save session
+nnoremap <leader>s :mksession<CR>
+
 " You can press Tab to return to normal mode.
 nnoremap <Tab> <Esc>
 " The vnoremap causes Tab to cancel any selection (gV is required to prevent automatic reselection).
 vnoremap <Tab> <Esc>gV
 " The onoremap causes Tab to cancel any operator-pending command (for example, y).
 onoremap <Tab> <Esc>
+
+inoremap <Tab> <C-N>
+
+" ctrlp config
+let g:ctrlp_map = '<leader>f'
+let g:ctrlp_max_height = 30
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_match_window_reversed = 0
 
 " The first inoremap causes Tab to exit insert mode, and the `^ restores the cursor position so exiting insert does not move the cursor left.
 "inoremap <Tab> <Esc>`^
@@ -56,31 +66,57 @@ map vv <Esc>:w<CR>
 nmap <leader>w :w!<cr>
 
 " Backspace 键映射为 Z 键
-nnoremap z i<BS><Esc>l
+"nnoremap z i<BS><Esc>l
 
-" 分屏窗口移动, Smart way to move between windows
+" Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
 " Go to home and end using capitalized directions
 noremap H ^
 noremap L $
 
+" $/^ doesn't do anything
+"nnoremap $ <nop>
+"nnoremap ^ <nop>
+
+" unmap ex mode: 'Type visual to go into Normal mode.'
+nnoremap Q <nop>
+
+" highlight last inserted text
+nnoremap gV `[v`]
+
 " Bash like keys for the command line
-cnoremap <C-A>      <Home>
+cnoremap <C-B>      <Home>
 cnoremap <C-E>      <End>
 cnoremap <C-K>      <C-U>
 cnoremap <C-P>      <Up>
 cnoremap <C-N>      <Down>
 
 " 切换前后buffer
-nnoremap [b :bprevious<CR>
-nnoremap ]b :bnext<CR>
+map <leader>n :bnext<cr>
+map <leader>p :bprevious<cr>
 " 使用方向键切换buffer
-noremap <left> :bp<CR>
-noremap <right> :bn<CR>
+noremap <left> :bprevious<CR>
+noremap <right> :bnext<CR>
+
+" Close the current buffer
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
+" Close all the buffers
+map <leader>ba :bufdo bd<cr>
+
+" Quickly open a buffer for scribble
+map <leader>q :e ~/buffer<cr>
+
+" Quickly open a markdown buffer for scribble
+map <leader>x :e ~/buffer.md<cr>
 
 " Keep search pattern at the center of the screen.
 nnoremap <silent> n nzz
@@ -89,9 +125,8 @@ nnoremap <silent> * *zz
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
-" 去掉搜索高亮
-"noremap <silent><leader>/ :nohls<CR>
-noremap <silent><leader><cr> :nohls<CR>
+" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
 
 " y$ -> Y Make Y behave like other capitals
 map Y y$
@@ -116,10 +151,14 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext<cr>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Surround the visual selection in parenthesis/brackets/etc
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
@@ -138,17 +177,32 @@ inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 inoremap $t <><esc>i
 
+" map markdown preview
+map <leader>m :!open -a "Marked 2" "%"<cr><cr>
+
+" map git commands
+map <leader>l :!clear && git log -p %<cr>
+map <leader>d :!clear && git diff %<cr>
+
+" space open/closes folds
+nnoremap <space> za
+
+" Arrows are unvimlike 
+
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+"nnoremap <left> <nop>
+"nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+" unmap F1 help
+nmap <F1> <nop>
+imap <F1> <nop>
+
 " F2 开启/关闭行号显示:
-function! HideNumber()
-  if(&relativenumber == &number)
-    set relativenumber! number!
-  elseif(&number)
-    set number!
-  else
-    set relativenumber!
-  endif
-  set number?
-endfunc
 nnoremap <F2> :call HideNumber()<CR>
 
 " F3 显示可打印字符开关
@@ -180,12 +234,13 @@ map <F8> :w<cr>:!python3 %<cr>
 " #
 " #############################################################################
 
-" Enable folding
-set foldmethod=indent
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+set foldmethod=indent   " fold based on indent level
 set foldlevel=99
-
-" Enable folding with the spacebar
-nnoremap <space> za
+" Add a bit extra margin to the left
+set foldcolumn=1
 
 " 启动的时候不显示那个援助索马里儿童的提示
 "set shortmess=atI
@@ -194,8 +249,7 @@ nnoremap <space> za
 " 好处：误删什么的，如果以前屏幕打开，可以找回
 set t_ti= t_te=
 
-" 鼠标暂不启用, 键盘党....
-set mouse-=a
+set cursorline          " highlight current line
 
 " 高亮第80列
 set colorcolumn=80
@@ -206,31 +260,37 @@ set termencoding=utf-8
 set fencs=ucs-bom,utf8,gb18030,gbk,gb2312,big5,euc-jp,euc-kr,latin1,cp936
 set fileencodings=utf8,cp936,gb18030,big5
 
-" Show number
-set number
+set number              " show line numbers
 
-" 搜索不区分大小写，但键入了大写则自动区分大小写
+" Ignore case when searching
 set ignorecase
+
+" When searching try to be smart about cases
 set smartcase
 
-" 状态栏格式定义
+" Always show the status line
 set laststatus=2
 
 " 设置缩进和展开
-set autoindent
-set smartindent
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set autoindent      "Auto indent
+set smartindent     "Smart indent
 set textwidth=79
 set fileformat=unix
+set softtabstop=4   " number of spaces in tab when editing
+set expandtab       " tabs are spaces
+" Be smart when using tabs ;)
+set smarttab
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" enable all Python syntax highlighting features
+let python_highlight_all = 1
 
 " 语法高亮
-syntax on
-"syntax off
+syntax on           " enable syntax processing
 
-filetype plugin indent on
+filetype plugin indent on      " load filetype-specific indent files
 
 " 不备份
 set nobackup
@@ -238,15 +298,10 @@ set nobackup
 " 不产生swap文件
 set noswapfile
 
-" 搜索高亮
-set hlsearch
-
-" 显示不可见字符。
 " 在显示不可见字符的情况下，TAB 键显示为 ^I，而 $ 显示在每行的结尾。
 set list
 
-" 设置换行
-set wrap
+set wrap            "Wrap lines
 
 " 在上下移动光标时，光标的上方或下方至少会保留显示的行数
 set scrolloff=7
@@ -259,15 +314,6 @@ au FocusGained * :set relativenumber
 " 插入模式下用绝对行号, 普通模式下用相对行号
 autocmd InsertEnter * :set norelativenumber number
 autocmd InsertLeave * :set relativenumber
-
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set norelativenumber number
-  else
-    set relativenumber
-  endif
-endfunc
-nnoremap <C-n> :call NumberToggle()<CR>
 
 " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
 if has("autocmd")
@@ -283,66 +329,87 @@ if has("autocmd")
   endif
 endif
 
+
 " Basic Settings
 
-set showmode
-set showcmd
-set hidden
-set wildmenu
-set wildmode=list:longest
-set visualbell
-set ttyfast
-set ruler
-set backspace=indent,eol,start
-set noundofile
+set showcmd             " show command in bottom bar
+set wildmenu            " visual autocomplete for command menu
+set wildmode=list:longest,full
+set lazyredraw          " redraw only when we need to.
 nnoremap / /\v
 vnoremap / /\v
-vnoremap . :norm.<CR>
-set gdefault
-set incsearch
-set showmatch
-"nnoremap <tab> %
-"vnoremap <tab> %
-set linebreak
-set formatoptions=qrn1
-"set spell spelllang=en_us
+vnoremap . :norm.<CR>   " map . in visual mode
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+set showmatch           " highlight matching [{()}]
+set ruler               " Text after a double-quote is a comment
+"set cmdheight=2         " Height of the command bar
+" Set to auto read when a file is changed from the outside
+set autoread
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+" For regular expressions turn magic on
+set magic
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
 
-" Arrows are unvimlike 
+"set background=dark
 
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
-" Toggle spelling visuals with <leader>s
-nnoremap <leader>s :set spell!<cr>
+set nocompatible                  " don't need to be compatible with old vim
 
+set clipboard=unnamed             " use the system clipboard
 
 
 " #############################################################################
 " #
-" #                             模板相关设置
+" #                                 Custom Functions
 " #
 " #############################################################################
 
-" 保存 Python 文件时删除多余空格
-fun! <SID>StripTrailingWhitespaces()
+" strips trailing whitespace at the end of files. this
+" is called on buffer write in the autogroup above.
+function! <SID>StripTrailingWhitespaces()
+    " save last search & cursor position
+    let _s=@/
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
+    let @/=_s
     call cursor(l, c)
-endfun
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+endfunction
 
-" Python文件中输入新行时#号注释不切回行首
-autocmd BufNewFile,BufRead *.py inoremap # X<c-h>#
+" Autogroups
+augroup configgroup
+    autocmd!
+    autocmd VimEnter * highlight clear SignColumn
+    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
+                \:call <SID>StripTrailingWhitespaces()
+    autocmd FileType java setlocal noexpandtab
+    autocmd FileType java setlocal list
+    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType php setlocal expandtab
+    autocmd FileType php setlocal list
+    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType ruby setlocal tabstop=2
+    autocmd FileType ruby setlocal shiftwidth=2
+    autocmd FileType ruby setlocal softtabstop=2
+    autocmd FileType ruby setlocal commentstring=#\ %s
+    autocmd FileType python setlocal commentstring=#\ %s
+    autocmd BufEnter *.cls setlocal filetype=java
+    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+    autocmd BufEnter Makefile setlocal noexpandtab
+    autocmd BufEnter *.sh setlocal tabstop=2
+    autocmd BufEnter *.sh setlocal shiftwidth=2
+    autocmd BufEnter *.sh setlocal softtabstop=2
+augroup END
 
 " 定义函数AutoSetFileHead，自动插入文件头
-autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
 function! AutoSetFileHead()
     "如果文件类型为.sh文件
     if &filetype == 'sh'
@@ -359,3 +426,73 @@ function! AutoSetFileHead()
     normal o
     normal o
 endfunc
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+
+" toggle between number and relativenumber
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber number
+  else
+    set relativenumber
+  endif
+endfunc
+nnoremap <C-n> :call NumberToggle()<CR>
+
+" 开启/关闭行号显示:
+function! HideNumber()
+  if(&relativenumber == &number)
+    set relativenumber! number!
+  elseif(&number)
+    set number!
+  else
+    set relativenumber!
+  endif
+  set number?
+endfunc
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" Python文件中输入新行时#号注释不切回行首
+autocmd BufNewFile,BufRead *.py inoremap # X<c-h>#
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+" To add the proper PEP8 indentation
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2

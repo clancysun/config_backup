@@ -43,20 +43,22 @@ export GPG_TTY=$(tty)
 # 每次登录进入到tmux
 tmux_init() {
     # 开启一个会话
-    tmux new-session -s "work" -d -n "local" "htop"
+    tmux new-session -s "work" -d -n "htop" "htop"
     # 开启一个横屏
     #tmux split-window -v
     # 开启一个竖屏
     #tmux split-window -h
     # 开启一个窗口
-    tmux new-window -n "local"
+    tmux new-window -n "bash" 
     # tmux -2强制启用256color，连接已开启的tmux
     tmux -2 attach-session -d
 }
 
-## 判断是否已有开启的tmux会话，没有则开启
-#if which tmux 2>&1 >/dev/null && [ "$TERM" == "xterm-256color" ]; then
+## Always work in a tmux session if tmux is installed
+#if which tmux 2>&1 >/dev/null; then
+#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
 #    test -z "$TMUX" && (tmux attach || tmux_init)
+#  fi
 #fi
 
 # 键盘映射
