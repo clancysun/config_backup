@@ -1,2 +1,5 @@
 # 在当前shell中开启vi模式
 set editing-mode vi
+
+# Bash中自动补全时忽略大小写
+set completion-ignore-case on

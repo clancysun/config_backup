@@ -306,6 +306,7 @@ map <F8> :w<cr>:!python3 %<cr>
 
 " F12 open NERDTree
 nmap <F12> :NERDTree  <cr>
+nmap <C-E> :NERDTree  <cr>
 
 " autocmd vimenter * nerdtree 
 let nerdtreeshowbookmarks=1
