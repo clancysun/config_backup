@@ -52,7 +52,7 @@ ZSH_THEME="xiong-chiamiov-plus"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,8 +86,10 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# 切换到vi命令模式
-set -o vi
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE=~/.zsh_history
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -105,20 +107,6 @@ export GPG_TTY=$(tty)
 #    export TERM=xterm-256color
 #fi
 
-# update git
-function gupdate () {
-    local mymessage="Standard commit.";
-
-    # if $1 not zero length
-    if [ ! -z "$1" ]; then
-        mymessage=$1
-    fi
-
-    git add .
-    git commit -m "$mymessage"
-    git push
-}
-
 # Remap Caps Lock key for X windows
 if [[ -r $HOME/.xmodmap && "$TERM" == "xterm-256color" ]]; then
     /usr/bin/xmodmap -display :0 $HOME/.xmodmap
@@ -126,18 +114,6 @@ fi
 
 # Remap Caps Lock key for virtual console windows
 #(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Control) | loadkeys -
-
-# Run shadowsocks proxy
-if [ -f "$HOME/.bwg.json" ]; then
-    if [[ ! `netstat -ano | grep ":1080"` ]]; then
-        /usr/bin/sslocal -c ~/.bwg.json &
-    fi
-fi
-
-# Run screenfetch
-if [ -f "/usr/bin/screenfetch" ]; then
-    screenfetch
-fi
 
 function tmux_init() {
     # 开启一个会话
@@ -154,3 +130,62 @@ function tmux_init() {
 #    test -z "$TMUX" && (tmux attach || tmux_init)
 #  fi
 #fi
+
+# update git
+function gupdate () {
+    local mymessage="Standard commit.";
+
+    # if $1 not zero length
+    if [ ! -z "$1" ]; then
+        mymessage=$1
+    fi
+
+    git add .
+    git commit -m "$mymessage"
+    git push
+}
+
+function calc() { echo "$*" | bc -l; }
+function upto() { cd "${PWD/\/$@\/*//$@}" }
+function lower() { echo ${@,,};}
+function upper() { echo ${@^^};}
+
+# 切换到vi命令模式
+set -o vi
+bindkey "^J" vi-cmd-mode
+# 按三次Esc进入vi的命令模式
+bindkey -v
+
+# vi style incremental search
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+
+# 在命令行输入字符之后，可以用方向键Up，Down来搜索以该串字符开头的历史命令。
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+# 设定push-line快捷键<Ctrl-K>
+bindkey -N newmap viins
+bindkey -M newmap '^K' push-line
+bindkey -A newmap main
+
+# 当我敲入 mvn 后，按ctrl-x两次会列出所有mvn开头的命令，然后可以通过输入序号来执行那一次的命令了。
+autoload -Uz history-beginning-search-menu
+zle -N history-beginning-search-menu
+bindkey '^X^X' history-beginning-search-menu
+
+setopt AUTO_CD
+
+# Run shadowsocks proxy
+if [ -f "$HOME/.bwg.json" ]; then
+    if [[ ! `netstat -ano | grep ":1080"` ]]; then
+        /usr/bin/sslocal -c ~/.bwg.json &
+    fi
+fi
+
+# Run screenfetch
+if [ -f "/usr/bin/screenfetch" ]; then
+    screenfetch
+fi

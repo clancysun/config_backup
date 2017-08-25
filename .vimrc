@@ -38,6 +38,18 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plugin 'vim-airline/vim-airline' 
 
+" Vim plugin for .tmux.conf.
+Plugin 'tmux-plugins/vim-tmux'
+
+" Solarized Colorscheme for Vim
+Plugin 'altercation/vim-colors-solarized'
+
+" Easily interact with tmux from vim.
+Plugin 'benmills/vimux'
+
+" Fast file navigation for VIM
+Plugin 'wincent/command-t'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -303,6 +315,13 @@ nnoremap <F7> :retab <CR> :w <CR>
 
 " 按F8运行Python$
 map <F8> :w<cr>:!python3 %<cr>
+
+" F9 colorscheme
+let g:solarized_termcolors=256
+let g:solarized_termtrans = 1
+set background=dark
+colorscheme solarized
+call togglebg#map("<F9>")
 
 " F12 open NERDTree
 nmap <F12> :NERDTree  <cr>

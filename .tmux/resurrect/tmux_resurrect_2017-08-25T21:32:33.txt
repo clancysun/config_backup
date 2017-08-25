@@ -1,0 +1,6 @@
+pane	0	1	:vim	1	:*	1	:/home/clancy/.dotfiles	1	vim	:vim .vimrc
+pane	0	1	:vim	1	:*	2	:/home/clancy/.dotfiles	0	zsh	:
+pane	0	2	:mtr	0	:#-	1	:/home/clancy/.dotfiles	1	mtr	:mtr github.com
+window	0	1	1	:*	7962,190x57,0,0{95x57,0,0,0,94x57,96,0,9}
+window	0	2	0	:#-	cabe,190x57,0,0,1
+state	0	

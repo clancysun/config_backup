@@ -8,3 +8,6 @@ alias pc="proxychains4"
 alias ubuntu='ssh -p '22222' clancy@localhost'
 alias bwg='ssh -p 27626 clancy@138.128.209.152'
 
+alias '?'='history | grep -i '
+alias 'p?'='ps aux | grep -i '
+
