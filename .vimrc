@@ -34,13 +34,13 @@ vnoremap <Tab> <Esc>gV
 " The onoremap causes Tab to cancel any operator-pending command (for example, y).
 onoremap <Tab> <Esc>
 
-inoremap <Tab> <C-N>
-
 " ctrlp config
 let g:ctrlp_map = '<leader>f'
 let g:ctrlp_max_height = 30
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_match_window_reversed = 0
+
+inoremap <Tab> <C-P>
 
 " The first inoremap causes Tab to exit insert mode, and the `^ restores the cursor position so exiting insert does not move the cursor left.
 "inoremap <Tab> <Esc>`^
