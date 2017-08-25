@@ -57,6 +57,9 @@ parse_git_branch() {
 export PS1="\[\e[01;37m\]\A\[\e[0m\]\[\e[00;37m\] [\[\e[0m\]\[\e[01;35m\]\u\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;36m\]\w\[\e[0m\]\[\e[00;37m\]\[\e[01;31m\]\$(parse_git_branch)\[\e[0m\]\[\e[00;37m\]] \\$ \[\e[0m\]"
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/usr/local/games:/usr/games:~/.local/bin:~/bin
 
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
 export JAVA_HOME="/usr/java/latest"
 export GPG_TTY=$(tty)
 
@@ -87,7 +90,7 @@ tmux_init() {
 # update git
 gup ()
 {
-    local mymessage="next update";
+    local mymessage="Standard commit.";
 
     # if $1 not zero length
     if [ ! -z "$1" ]; then

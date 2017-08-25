@@ -74,6 +74,13 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+nmap <C-e> :E<cr>
+
+if $term == "xterm-256color" || $term == "screen-256color" || $colorterm == "gnome-terminal"
+  set t_co=256
+endif
+
+
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
@@ -103,8 +110,8 @@ cnoremap <C-N>      <Down>
 map <leader>n :bnext<cr>
 map <leader>p :bprevious<cr>
 " 使用方向键切换buffer
-noremap <left> :bprevious<CR>
-noremap <right> :bnext<CR>
+"noremap <left> :bprevious<CR>
+"noremap <right> :bnext<CR>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -189,14 +196,20 @@ nnoremap <space> za
 
 " Arrows are unvimlike 
 
-nnoremap <up> <nop>
-nnoremap <down> <nop>
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
 "nnoremap <left> <nop>
 "nnoremap <right> <nop>
 inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
+
+" disable the arrow keys
+nnoremap <left> :echoe "use h"<cr>
+nnoremap <right> :echoe "use l"<cr>
+nnoremap <up> :echoe "use k"<cr>
+nnoremap <down> :echoe "use j"<cr>
 
 " unmap F1 help
 nmap <F1> <nop>
@@ -226,6 +239,13 @@ nnoremap <F7> :retab <CR> :w <CR>
 
 " 按F8运行Python$
 map <F8> :w<cr>:!python3 %<cr>
+
+" F12 open NERDTree
+nmap <F12> :NERDTree  <cr>
+
+" autocmd vimenter * nerdtree 
+let nerdtreeshowbookmarks=1
+let nerdtreechdirmode=2
 
 
 " #############################################################################
@@ -280,9 +300,9 @@ set softtabstop=4   " number of spaces in tab when editing
 set expandtab       " tabs are spaces
 " Be smart when using tabs ;)
 set smarttab
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
 
 " enable all Python syntax highlighting features
 let python_highlight_all = 1
@@ -292,7 +312,10 @@ syntax on           " enable syntax processing
 
 filetype plugin indent on      " load filetype-specific indent files
 
-" 不备份
+" set title to show in console title bar
+set title
+
+" do not keep a backup file!
 set nobackup
 
 " 不产生swap文件
@@ -362,6 +385,10 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 set nocompatible                  " don't need to be compatible with old vim
 
 set clipboard=unnamed             " use the system clipboard
+
+" open new split panes to right and bottom
+set splitbelow
+set splitright
 
 
 " #############################################################################
@@ -496,3 +523,14 @@ au BufNewFile,BufRead *.js, *.html, *.css
     \ set tabstop=2
     \ set softtabstop=2
     \ set shiftwidth=2
+
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+
+" #############################################################################
+" #
+" #                                 Plugin
+" #
+" #############################################################################
+
+
