@@ -91,8 +91,7 @@ tmux_init() {
 #fi
 
 # update git
-gup ()
-{
+gupdate () {
     local mymessage="Standard commit.";
 
     # if $1 not zero length
