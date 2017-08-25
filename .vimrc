@@ -1,8 +1,73 @@
 " #############################################################################
 " #
+" #                                 Plugin
+" #
+" #############################################################################
+
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" NERD tree will be loaded on the first invocation of NERDTreeToggle command
+Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plugin 'vim-airline/vim-airline' 
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+let g:airline_powerline_fonts = 1
+" Add optional packages.
+" The matchit plugin makes the % command work better, but it is not backwards
+" compatible.
+if has('syntax') && has('eval')
+  packadd matchit
+endif
+
+
+" #############################################################################
+" #
 " #                                 键位映射
 " #
 " #############################################################################
+
 
 "let mapleader = "\<Space>"
 let mapleader=","       " leader is comma
@@ -74,12 +139,11 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-nmap <C-e> :E<cr>
+"nmap <C-e> :E<cr>
 
 if $term == "xterm-256color" || $term == "screen-256color" || $colorterm == "gnome-terminal"
   set t_co=256
 endif
-
 
 " move vertically by visual line
 nnoremap j gj
@@ -254,6 +318,7 @@ let nerdtreechdirmode=2
 " #
 " #############################################################################
 
+
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
@@ -288,9 +353,6 @@ set ignorecase
 " When searching try to be smart about cases
 set smartcase
 
-" Always show the status line
-set laststatus=2
-
 " 设置缩进和展开
 set autoindent      "Auto indent
 set smartindent     "Smart indent
@@ -309,8 +371,6 @@ let python_highlight_all = 1
 
 " 语法高亮
 syntax on           " enable syntax processing
-
-filetype plugin indent on      " load filetype-specific indent files
 
 " set title to show in console title bar
 set title
@@ -379,10 +439,10 @@ set novisualbell
 
 "set background=dark
 
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
-set nocompatible                  " don't need to be compatible with old vim
+" Show the status line and suler
+"set statusline=[%02n]\ %{HasPaste()}%F%m%r%h\ %w\ CWD:\ %r%{getcwd()}%h\ \ Line:\ %l\ \ Column:\ %c\ \ %P%*
+" Always show the status line
+set laststatus=2
 
 set clipboard=unnamed             " use the system clipboard
 
@@ -390,12 +450,19 @@ set clipboard=unnamed             " use the system clipboard
 set splitbelow
 set splitright
 
+set backspace=indent,eol,start  " more powerful backspacing
+
+" Suffixes that get lower priority when doing tab completion for filenames.
+" These are files we are not likely to want to edit or read.
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.png,.jpg
+
 
 " #############################################################################
 " #
 " #                                 Custom Functions
 " #
 " #############################################################################
+
 
 " strips trailing whitespace at the end of files. this
 " is called on buffer write in the autogroup above.
@@ -526,11 +593,7 @@ au BufNewFile,BufRead *.js, *.html, *.css
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-
-" #############################################################################
-" #
-" #                                 Plugin
-" #
-" #############################################################################
+"Auto change the directory to the current file location
+autocmd BufEnter * lcd %:p:h
 
 
