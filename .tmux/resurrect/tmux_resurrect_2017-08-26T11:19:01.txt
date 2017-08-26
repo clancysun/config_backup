@@ -1,0 +1,7 @@
+pane	work	1	:htop	0	:#	1	:/home/clancy	1	htop	:
+pane	work	2	:zsh	0	:-	1	:/home/clancy	1	zsh	:
+pane	work	3	:zsh	1	:*	1	:/home/clancy	1	vim	:vim
+window	work	1	0	:#	cabd,190x57,0,0,0
+window	work	2	0	:-	cabe,190x57,0,0,1
+window	work	3	1	:*	cabf,190x57,0,0,2
+state	work	

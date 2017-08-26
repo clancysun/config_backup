@@ -1,0 +1,4 @@
+pane	0	1	:zsh	1	:*	1	:/home/clancy	0	vim	:vim .zshrc
+pane	0	1	:zsh	1	:*	2	:/home/clancy	1	zsh	:
+window	0	1	1	:*	833f,160x40,0,0{80x40,0,0,0,79x40,81,0,2}
+state	0	

@@ -86,11 +86,6 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=2000
-SAVEHIST=2000
-HISTFILE=~/.zsh_history
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -100,55 +95,16 @@ if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
 fi
 
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE=~/.zsh_history
+
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
 export JAVA_HOME="/usr/java/latest"
 export GPG_TTY=$(tty)
-
-#if [ -n "$DISPLAY" ]; then
-#    export TERM=xterm-256color
-#fi
-
-# Remap Caps Lock key for X windows
-if [[ -r $HOME/.xmodmap && "$TERM" == "xterm-256color" ]]; then
-    /usr/bin/xmodmap -display :0 $HOME/.xmodmap
-fi
-
-# Remap Caps Lock key for virtual console windows
-#(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Control) | loadkeys -
-
-function tmux_init() {
-    # 开启一个会话
-    tmux new-session -s "work" -d -n "htop" "htop"
-    # 开启一个窗口
-    tmux new-window -n "zsh"
-    # tmux -2强制启用256color，连接已开启的tmux
-    tmux -2 attach-session -d
-}
-
-# Always work in a tmux session if tmux is installed
-#if which tmux 2>&1 >/dev/null; then
-#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
-#    test -z "$TMUX" && (tmux attach || tmux_init)
-#  fi
-#fi
-
-# update git
-function gupdate () {
-    local mymessage="Standard commit.";
-
-    # if $1 not zero length
-    if [ ! -z "$1" ]; then
-        mymessage=$1
-    fi
-
-    git add .
-    git commit -m "$mymessage"
-    git push
-}
-
-function calc() { echo "$*" | bc -l; }
-function upto() { cd "${PWD/\/$@\/*//$@}" }
-function lower() { echo ${@,,};}
-function upper() { echo ${@^^};}
 
 # 切换到vi命令模式
 set -o vi
@@ -178,14 +134,78 @@ bindkey '^X^X' history-beginning-search-menu
 
 setopt AUTO_CD
 
-# Run shadowsocks proxy
-if [ -f "$HOME/.bwg.json" ]; then
-    if [[ ! `netstat -ano | grep ":1080"` ]]; then
-        /usr/bin/sslocal -c ~/.bwg.json &
-    fi
-fi
+#if [ -n "$DISPLAY" ]; then
+#    export TERM=xterm-256color
+#    export TERM=screen-256color
+#fi
 
-# Run screenfetch
-if [ -f "/usr/bin/screenfetch" ]; then
-    screenfetch
-fi
+# Remap Caps Lock key for X windows
+function remap_caps_lock_for_x_windows() {
+    if [[ -n "$DISPLAY" && -r $HOME/.xmodmap ]]; then
+        /usr/bin/xmodmap -display :0 $HOME/.xmodmap
+    fi
+}
+remap_caps_lock_for_x_windows
+
+# Remap Caps Lock key for virtual console windows
+#(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Control) | loadkeys -
+function remap_caps_lock_for_tty() {
+    if [ `dumpkeys | grep 'keycode  58 = Caps Lock'` ]; then
+        if [[ ! -n "$DISPLAY" && -f /etc/rc.d/rc.local ]]; then
+            sudo /etc/rc.d/rc.local
+        fi
+    fi
+}
+remap_caps_lock_for_tty
+
+function ssh_add_for_x_windows() {
+    if [ -n "$DISPLAY" ]; then
+        ssh-add
+    fi
+}
+
+function tmux_init() {
+    # 开启一个会话
+    tmux new-session -s "work" -d -n "htop" "htop"
+    # 开启一个窗口
+    tmux new-window -n "zsh"
+    # tmux -2强制启用256color，连接已开启的tmux
+    tmux -2 attach-session -d
+}
+
+function attach_tmux() {
+    # Always work in a tmux session if tmux is installed
+    if which tmux 2>&1 >/dev/null; then
+        test -z "$TMUX" && (tmux attach || tmux_init)
+    fi
+}
+
+# update git
+function gupdate () {
+    local mymessage="Standard commit.";
+
+    # if $1 not zero length
+    if [ ! -z "$1" ]; then
+        mymessage=$1
+    fi
+
+    git add .
+    git commit -m "$mymessage"
+    git push
+}
+
+function calc() { echo "$*" | bc -l; }
+
+# Run shadowsocks proxy
+function run_shadowsocks_proxy() {
+    if [ -f "$HOME/.bwg.json" ]; then
+        if [[ ! `netstat -ano | grep ":1080"` ]]; then
+            nohup /usr/bin/sslocal -c ~/.bwg.json &
+        fi
+    fi
+}
+
+## Run screenfetch
+#if [ -f "/usr/bin/screenfetch" ]; then
+#    screenfetch
+#fi
