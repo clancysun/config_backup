@@ -199,7 +199,7 @@ function calc() { echo "$*" | bc -l; }
 # Run shadowsocks proxy
 function run_shadowsocks_proxy() {
     if [ -f "$HOME/.bwg.json" ]; then
-        if [[ ! `netstat -ano | grep ":1080"` ]]; then
+        if [ ! `netstat -ano | grep ":1080"` ]; then
             nohup /usr/bin/sslocal -c ~/.bwg.json &
         fi
     fi
