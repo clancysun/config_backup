@@ -1,5 +1,0 @@
-pane	fedora	1	:htop	0	:#-	1	:/home/clancy/.dotfiles	1	htop	:
-pane	fedora	2	:vim	1	:*	1	:/home/clancy/.dotfiles	1	vim	:vim .tmux.conf
-window	fedora	1	0	:#-	c69d,94x57,0,0,0
-window	fedora	2	1	:*	c69e,94x57,0,0,1
-state	fedora	

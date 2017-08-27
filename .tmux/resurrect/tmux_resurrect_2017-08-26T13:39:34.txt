@@ -1,5 +1,0 @@
-pane	work	1	:htop	0	:#-	1	:/home/clancy	1	htop	:
-pane	work	2	:zsh	1	:*	1	:/home/clancy/workspace/dotfiles	1	zsh	:
-window	work	1	0	:#-	cabd,190x57,0,0,0
-window	work	2	1	:*	cabf,190x57,0,0,2
-state	work	

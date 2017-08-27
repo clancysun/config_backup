@@ -1,3 +1,0 @@
-pane	0	1	:vim	1	:*	1	:/home/clancy/.dotfiles	1	vim	:vim .tmux.conf
-window	0	1	1	:*	cabd,190x57,0,0,0
-state	0	
